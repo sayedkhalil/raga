@@ -25,6 +25,7 @@ let u=[]
   var item
   const [ans,setans]=useState("")
   const[answerr,setanswerr]=useState("")
+  const[case1,setcase1]=useState("")
   const [index,setindex]=useState(1)
   useEffect(()=>{
     const init=()=>{
@@ -61,7 +62,7 @@ let u=[]
         init() 
   },[])
   const onvalue = (e) => setanswerr( e.target.value);console.log(answerr)
-  let dataq =easy
+  let dataq =all
   const start=[      <button className='buton' onClick={()=>{setxml(start[1]); settimeer([1,30]);s=s+1;settitle(item.title);indexx=indexx+1}} key="1">إبدأ</button>] 
 
   const [xml,setxml]=useState(start[0])
@@ -89,19 +90,19 @@ const two=()=>{
     setxml(
       <div id="content">
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans1} onChange={onvalue}/>
+      <input type="radio" id="radio" name="answer" value={item.ans1} />
       <label htmlFor="ans1">{item.ans1}</label>
       </span>
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans2} onChange={onvalue}/>
+      <input type="radio" id="radio" name="answer" value={item.ans2} />
       <label htmlFor="ans2">{item.ans2}</label>
       </span>
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans3} onChange={onvalue}/>
+      <input type="radio" id="radio" name="answer" value={item.ans3} />
       <label htmlFor="ans3">{item.ans3}</label>
       </span>
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans4} onChange={onvalue}/>
+      <input type="radio" id="radio" name="answer" value={item.ans4} />
       <label htmlFor="ans4">{item.ans4}</label>
       </span> 
       </div> )
@@ -131,9 +132,13 @@ useEffect(() => {
 // },[])
 
 const onresb =()=>{ 
-  if(answerr==ans){
+
+  if(answerr.trim()==ans.trim()){
     var audi = new Audio('../ss.mp3');
     audi.play();
+  
+ 
+
     setindex(index+1)
   if(index<18){
     let le = Array.from(document.querySelectorAll("#level span"));
