@@ -8,10 +8,12 @@ import { db } from "../firebase";
 import { collection, addDoc ,getDocs,doc,Timestamp,deleteDoc , getDoc, query, where} from "firebase/firestore";
 
 export default function Home({getdata}) {
-  let easy =JSON.parse(getdata.easy)
-  let def =JSON.parse(getdata.def)
-  let medl =JSON.parse(getdata.medl)
-
+let u=[]
+  let all= JSON.parse(getdata.all2)
+   u=all
+  let easy =u.filter((i)=>i.rang=="1")
+  let def =u.filter((i)=>!i.rang)
+  let medl =u.filter((i)=>i.rang=="2")
   let iner; 
   var s =0
   const o =[]
@@ -59,12 +61,7 @@ export default function Home({getdata}) {
         init() 
   },[])
   const onvalue = (e) => setanswerr( e.target.value);console.log(answerr)
-  let dataq =[{"title":" من العشرة المبشرين بالجنة","ans1":"خالد بن الوليد","ans2":"عمرو بن العاص","ans3":"أنس بن مالك","ans4":"أبو بكر الصديق","ans":"أبو بكر الصديق"},
-  {"title":"أصغر رقم زوجي","ans1":"1","ans2":"2","ans3":"3","ans4":"4","ans":"2"},
-  {"title":"في الجهاز الهضمي","ans1":"الرئة","ans2":"القرنية","ans3":"القلب","ans4":"المعدة","ans":"المعدة"},
-  {"title":"تقع في غرب المملكة","ans1":"جدة","ans2":"الرياض","ans3":"القصيم","ans4":"الدمام","ans":"جدة"},
-  {"title":"فعل أمر","ans1":"يأكل","ans2":"نأكل","ans3":"أكل","ans4":"كل","ans":"كل"},
-  {"title":"أكبر رقم فردي مكون من رقمين","ans1":"98","ans2":"100","ans3":"99","ans4":"101","ans":"99"}]
+  let dataq =easy
   const start=[      <button className='buton' onClick={()=>{setxml(start[1]); settimeer([1,30]);s=s+1;settitle(item.title);indexx=indexx+1}} key="1">إبدأ</button>] 
 
   const [xml,setxml]=useState(start[0])
@@ -141,6 +138,12 @@ const onresb =()=>{
   if(index<18){
     let le = Array.from(document.querySelectorAll("#level span"));
     le[index].classList.add("act");
+    if(index==6){
+      dataq=medl
+    }
+  if(index==11){
+    dataq=def
+  }
    two()
   settimeer([1,30])
   }else{
@@ -213,10 +216,15 @@ export async function getServerSideProps(){
   const es=[]
   const md=[]
   const df=[]
+  const all =[]
   const prodlist = collection(db, 'quize');
   const a = query(prodlist, where("category", "==",1));
   const b = query(prodlist, where("category", "==",2));
   const c = query(prodlist, where("category", "==",3));
+ 
+  const prodsnapshot = await getDocs(prodlist);
+  const products =async()=>await prodsnapshot.docs?prodsnapshot.docs.map(doc =>{ all.push(doc.data());   }):[]
+  products()
   const easy= await getDocs(a);
    easy?easy.forEach(doc =>{ es.push(doc.data())  }):es
    const def= await getDocs(c);
@@ -225,6 +233,6 @@ export async function getServerSideProps(){
    medl?medl.forEach(doc =>{md.push(doc.data())  }):md
          
      return{
-      props:{getdata:{easy:JSON.stringify(easy),def:JSON.stringify(def),medl:JSON.stringify(medl)}}
+      props:{getdata:{easy:JSON.stringify(easy),def:JSON.stringify(def),medl:JSON.stringify(medl),all2:JSON.stringify(all)}}
            }
 }
