@@ -8,13 +8,11 @@ import { db } from "../firebase";
 import { collection, addDoc ,getDocs,doc,Timestamp,deleteDoc , getDoc, query, where} from "firebase/firestore";
 
 export default function Home({getdata}) {
-let u=[]
-  let all= JSON.parse(getdata.all2)
-   u=all
-  let easy =u.filter((i)=>i.rang=="1")
-  let def =u.filter((i)=>!i.rang)
-  let medl =u.filter((i)=>i.rang=="2")
-  let iner; 
+  let all =JSON.parse(getdata.all2)
+   let easy =all.filter(i=>i.rang=="1")
+   let def =all.filter(i=>i.rang=="3")
+   let medl =all.filter(i=>i.rang=="2")
+    let iner; 
   var s =0
   const o =[]
   const minit=0
@@ -24,8 +22,8 @@ let u=[]
   const random=[]
   var item
   const [ans,setans]=useState("")
+  const [dataq,sedataq]=useState(easy)
   const[answerr,setanswerr]=useState("")
-  const[case1,setcase1]=useState("")
   const [index,setindex]=useState(1)
   useEffect(()=>{
     const init=()=>{
@@ -62,7 +60,7 @@ let u=[]
         init() 
   },[])
   const onvalue = (e) => setanswerr( e.target.value);console.log(answerr)
-  let dataq =all
+  
   const start=[      <button className='buton' onClick={()=>{setxml(start[1]); settimeer([1,30]);s=s+1;settitle(item.title);indexx=indexx+1}} key="1">إبدأ</button>] 
 
   const [xml,setxml]=useState(start[0])
@@ -90,19 +88,19 @@ const two=()=>{
     setxml(
       <div id="content">
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans1} />
+      <input type="radio" id="radio" name="answer" value={item.ans1} onChange={onvalue}/>
       <label htmlFor="ans1">{item.ans1}</label>
       </span>
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans2} />
+      <input type="radio" id="radio" name="answer" value={item.ans2} onChange={onvalue}/>
       <label htmlFor="ans2">{item.ans2}</label>
       </span>
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans3} />
+      <input type="radio" id="radio" name="answer" value={item.ans3} onChange={onvalue}/>
       <label htmlFor="ans3">{item.ans3}</label>
       </span>
       <span>
-      <input type="radio" id="radio" name="answer" value={item.ans4} />
+      <input type="radio" id="radio" name="answer" value={item.ans4} onChange={onvalue}/>
       <label htmlFor="ans4">{item.ans4}</label>
       </span> 
       </div> )
@@ -132,23 +130,19 @@ useEffect(() => {
 // },[])
 
 const onresb =()=>{ 
-
   if(answerr.trim()==ans.trim()){
     var audi = new Audio('../ss.mp3');
     audi.play();
-  
- 
-
     setindex(index+1)
-  if(index<18){
+    if (index>3) {
+      sedataq(medl)
+    }
+    if(index>8){
+      sedataq(def)
+    }
+  if(index<15){
     let le = Array.from(document.querySelectorAll("#level span"));
     le[index].classList.add("act");
-    if(index==6){
-      dataq=medl
-    }
-  if(index==11){
-    dataq=def
-  }
    two()
   settimeer([1,30])
   }else{

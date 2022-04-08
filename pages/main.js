@@ -12,7 +12,7 @@ const Main = () => {
     const onans3=(e)=>setobj({...obj,ans3:e.target.value})
     const onans4=(e)=>setobj({...obj,ans4:e.target.value})
     const onans=(e)=>setobj({...obj,ans:e.target.value})
-    const onrang=(e)=>setobj({...obj,rang:e.target.value})
+    const onrang=(e)=>setobj({...obj,z:e.target.value})
     const onsend=async(e)=>{
         e.preventDefault()  
 console.log(obj)
